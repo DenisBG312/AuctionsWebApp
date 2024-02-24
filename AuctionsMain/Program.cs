@@ -1,3 +1,4 @@
+using Auctions.Data.Services;
 using AuctionsMain.Data;
 using AuctionsMain.Data.Services;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Add Razor runtime compilation here
 
 builder.Services.AddScoped<IListingsService, ListingsService>();
+builder.Services.AddScoped<IBidsService, BidsService>();
+builder.Services.AddScoped<ICommentsService, CommentsService>();
 
 var app = builder.Build();
 

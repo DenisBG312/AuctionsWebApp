@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <RootNamespace>AuctionsMain</RootNamespace>
     <UserSecretsId>aspnet-AuctionsMain-0b71a723-ee3b-4827-bfa4-95dd23e8c8cc</UserSecretsId>
   </PropertyGroup>
 

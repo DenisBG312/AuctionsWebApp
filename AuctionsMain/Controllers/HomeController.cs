@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace AuctionsMain.Controllers
+namespace Auctions.Controllers
 {
     public class HomeController : Controller
     {

@@ -34,5 +34,10 @@ namespace AuctionsMain.Data.Services
             var applicationDbContext = _context.Listings.Include(l => l.User);
             return applicationDbContext;
         }
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }
