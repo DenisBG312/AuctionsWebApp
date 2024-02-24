@@ -35,7 +35,7 @@
 
 <div class="d-flex justify-content-center">
     <a asp-action="Index"
-       asp-route-between="@(Model.PageIndex - 1)"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
        class="btn btn-default @prevDisabled">
         Previous
     </a>
@@ -43,7 +43,7 @@
         Page @Model.PageIndex of @Model.TotalPages
     </div>
     <a asp-action="Index"
-       asp-route-between="@(Model.PageIndex + 1)"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
        class="btn btn-default @nextDisabled">
         Next
     </a>
