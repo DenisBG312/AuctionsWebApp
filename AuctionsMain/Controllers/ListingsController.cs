@@ -23,10 +23,20 @@ namespace AuctionsMain.Controllers
         }
 
         // GET: Listings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
             var applicationDbContext = _listingsService.GetAll();
-            return View(await applicationDbContext.ToListAsync());
+            int pageSize = 3;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                applicationDbContext = applicationDbContext.Where(a => a.Title.Contains(searchString));
+
+                return View(await PaginatedList<Listing>.CreateAsync(applicationDbContext.Where(l => l.IsSold == false).AsNoTracking(), pageNumber ?? 1,
+                    pageSize));
+            }
+
+            return View(await PaginatedList<Listing>.CreateAsync(applicationDbContext.Where(l => l.IsSold == false).AsNoTracking(), pageNumber ?? 1,
+                pageSize));
         }
 
         // GET: Listings/Details/5
@@ -43,11 +53,11 @@ namespace AuctionsMain.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(listing);
         }
-        
-         //GET: Listings/Create
+
+        //GET: Listings/Create
         public IActionResult Create()
         {
             return View();
@@ -84,7 +94,7 @@ namespace AuctionsMain.Controllers
             return View(listing);
         }
 
-    //// GET: Listings/Edit/5
+        //// GET: Listings/Edit/5
         //public async Task<IActionResult> Edit(int? id)
         //{
         //    if (id == null || _context.Listings == null)
