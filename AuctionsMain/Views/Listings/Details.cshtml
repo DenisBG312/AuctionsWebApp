@@ -118,20 +118,37 @@
     </div>
 </div>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="container container-custom">
-        <form asp-action="AddComment" method="post">
-            <h6>Add Comment</h6>
-            <div class="input-group">
-                <textarea class="form-control" aria-label="With textarea" name="Content" placeholder="Write your comment here" rows="3"></textarea>
-                <input type="hidden" name="IdentityUserId" class="form-control" value="@userManager.GetUserId(User)" />
-                <input type="hidden" name="ListingId" class="form-control" value="@Model.Id" />
-                <button type="submit" class="btn btn-primary btn-custom">Submit</button>
+<div class="container container-custom">
+    @if (User.Identity.IsAuthenticated)
+    {
+        var userHasBid = Model.Bids.Any(bid => bid.IdentityUserId == userManager.GetUserId(User));
+        if (userHasBid)
+        {
+            <form asp-action="AddComment" method="post">
+                <h6>Add Comment</h6>
+                <div class="input-group">
+                    <textarea class="form-control" aria-label="With textarea" name="Content" placeholder="Write your comment here" rows="3"></textarea>
+                    <input type="hidden" name="IdentityUserId" class="form-control" value="@userManager.GetUserId(User)" />
+                    <input type="hidden" name="ListingId" class="form-control" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary btn-custom">Submit</button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                You can only comment if you have placed a bid.
             </div>
-        </form>
-    </div>
-}
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            You must be logged in to leave a comment.
+            <a href="/Identity/Account/Login" class="btn btn-primary btn-sm ml-2">Login</a>
+        </div>
+    }
+</div>
 
 <div class="container container-custom">
     <h6>Comments</h6>
