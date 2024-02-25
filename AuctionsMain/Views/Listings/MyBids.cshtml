@@ -1,32 +1,134 @@
-﻿﻿
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model AuctionsMain.PaginatedList<AuctionsMain.Models.Bid>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Bids";
 }
+
+<style>
+    /* Main Title Styles */
+    h2 {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Listing Container Styles */
+    .listing-container {
+        background-color: #f8f9fa;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+        /* Listing Container Hover Styles */
+        .listing-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Listing Title Styles */
+    .listing-title a {
+        color: #000;
+        font-size: 1.5rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .listing-title a:hover {
+            color: #06f;
+        }
+
+    /* Listing Description Styles */
+    .listing-description {
+        color: #666;
+        font-size: 1.1rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Listing Price Styles */
+    .listing-price {
+        color: #06f;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* Listing Listed By Styles */
+    .listing-listed-by {
+        color: #999;
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    /* No Listings Message Styles */
+    .no-listings-message {
+        color: #f00;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* Pagination Container Styles */
+    .pagination-container {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    /* Pagination Button Styles */
+    .pagination-btn {
+        margin: 0 5px;
+        font-size: 1.3rem;
+        border-radius: 5px;
+        padding: 10px 20px;
+        background-color: #06f;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .pagination-btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Pagination Page Info Styles */
+    .pagination-page-info {
+        margin: 0 10px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #333;
+    }
+</style>
 
 <h2>My Bids</h2>
 
 @foreach (var bid in Model)
 {
-    <div class="container" style="background-color: rgba(138, 129, 133, 0.6); margin-top:50px; margin-bottom: 50px; padding: 20px; border-radius:10px;">
+    <div class="container listing-container">
         <div class="row">
-            <div class="col col-xs-6 col-lg-5">
-                <img src="~/Images/@bid.Listing.ImagePath" style="max-width: 400px; max-height: 400px;" />
+            <div class="col-md-6 col-lg-4">
+                <img src="~/Images/@bid.Listing.ImagePath" class="img-fluid" style="max-width: 100%; max-height: 400px;" />
             </div>
-            <div class="col col-xs-6 col-lg-7">
-                <h5><a asp-action="Details" asp-route-id="@bid.Listing.Id" style="color: black;">@bid.Listing.Title</a></h5>
-                <div>@bid.Listing.Description</div>
-                <div>Bid: $@bid.Listing.Price.ToString("N2")</div>
-                <div>Listed by: @bid.Listing.User.Email</div>
+            <div class="col-md-6 col-lg-8">
+                <h5 class="listing-title"><a asp-action="Details" asp-route-id="@bid.Listing.Id">@bid.Listing.Title</a></h5>
+                <div class="listing-description">@bid.Listing.Description</div>
+                <div class="listing-price">Bid: $@bid.Listing.Price.ToString("N2")</div>
+                <div class="listing-listed-by">Listed by: @bid.Listing.User.Email</div>
             </div>
         </div>
     </div>
 }
+
 @if (!Model.Any())
 {
-    <p>No Bids</p>
+    <p class="no-listings-message">No Bids</p>
 }
 
 @{
@@ -34,18 +136,16 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center pagination-container">
     <a asp-action="Index"
-       asp-route-between="@(Model.PageIndex - 1)"
-       class="btn btn-default @prevDisabled">
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default pagination-btn @prevDisabled">
         Previous
     </a>
-    <div class="btn" style="cursor: default">
-        Page @Model.PageIndex of @Model.TotalPages
-    </div>
+    <div class="btn pagination-page-info">Page @Model.PageIndex of @Model.TotalPages</div>
     <a asp-action="Index"
-       asp-route-between="@(Model.PageIndex + 1)"
-       class="btn btn-default @nextDisabled">
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default pagination-btn @nextDisabled">
         Next
     </a>
 </div>
